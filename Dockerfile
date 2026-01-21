@@ -1,17 +1,16 @@
 FROM ubuntu:22.04
-
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt install -y \
     xfce4 xfce4-goodies \
     tigervnc-standalone-server tigervnc-common \
     novnc websockify \
-    xterm \
+    xterm dbus-x11 \
     && apt clean
 
-# VNC startup
 RUN mkdir -p /root/.vnc && \
-    printf '#!/bin/sh\nunset SESSION_MANAGER\nunset DBUS_SESSION_BUS_ADDRESS\nexec startxfce4 &\n' > /root/.vnc/xstartup && \
+    printf '#!/bin/sh\nunset SESSION_MANAGER\nunset DBUS_SESSION_BUS_ADDRESS\nexec startxfce4\n' \
+    > /root/.vnc/xstartup && \
     chmod +x /root/.vnc/xstartup
 
 EXPOSE 6080
