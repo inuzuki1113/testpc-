@@ -3,20 +3,19 @@ FROM ubuntu:22.04
 
 # 環境変数
 ENV DEBIAN_FRONTEND=noninteractive
-ENV USER=root
 ENV DISPLAY=:1
+ENV USER=root
 
-# 必要なパッケージインストール
+# 必要最小限のパッケージをインストール（止まりにくい）
 RUN apt-get update && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         xfce4 xfce4-goodies \
         tigervnc-standalone-server \
-        git python3 python3-pip python3-websockify \
+        git python3-minimal python3-pip \
         x11vnc xvfb wget curl nano && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# NoVNC のインストール
+# NoVNC をインストール
 RUN git clone https://github.com/novnc/noVNC.git /opt/noVNC
 
 # VNC ディレクトリと xstartup 設定
